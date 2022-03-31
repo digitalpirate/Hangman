@@ -24,18 +24,20 @@ namespace Hangman
             var random = new Random();
             int rnd = random.Next(0,wordlist.Length);
             answer = wordlist[rnd];
+
+            //make a string of * to show number of letters in answer
             char[] answerAsCharArray = answer.ToCharArray();
             char[] answerDisplay = new char[answerAsCharArray.Length];
             for( i=0;i<answerAsCharArray.Length;i++)
             {
                 answerDisplay[i] = '*';
             }
-            
+            //Stringbuilder, use it to collect every guess and display
             StringBuilder guessedLetters = new StringBuilder(11);
 
-            //Stringbuilder, use it to collect every guess and display
+            
 
-            //Stringbuilder, make a string of - to show number of letters in answer
+            
 
             do
             {
