@@ -10,7 +10,7 @@ namespace Hangman
         static void Main(string[] args)
         {
             bool run = true;
-            string input, answer;
+            string input, answer, checkAnswer;
             char guessedChar;
             int i,j;
             //StreamReader wordlistTxt = new StreamReader("wordlist.txt");
@@ -33,7 +33,7 @@ namespace Hangman
             
             StringBuilder guessedLetters = new StringBuilder(11);
 
-                //Stringbuilder, use it to collect every guess and display
+            //Stringbuilder, use it to collect every guess and display
 
             //Stringbuilder, make a string of - to show number of letters in answer
 
@@ -41,6 +41,15 @@ namespace Hangman
             {
                 for ( i = 10; i > 0; i--)
                 {
+                    checkAnswer = answerDisplay.ToString();
+                    if (checkAnswer == answer)
+                    {
+                        WriteLine("You Win!");
+                        run = false;
+                        i = 0;
+                        break;
+                    }
+                    else { 
 
                     WriteLine("Guess the word!");
                     //Display number of letters in word
@@ -63,15 +72,10 @@ namespace Hangman
                                 {
                                     answerDisplay[j] = guessedChar;
                                 }
+                                else { }
                             }
 
-                            if (answerDisplay.ToString() == answer)
-                            {
-                                WriteLine("You Win!");
-                                run = false;
-                                i = 0;
-                                break;
-                            }
+                            
 
                             guessedLetters.Append(guessedChar);
 
@@ -90,6 +94,7 @@ namespace Hangman
                         default:
                             WriteLine("invalid");
                             break;
+                    }
                     }
                 }
                 run = false;
