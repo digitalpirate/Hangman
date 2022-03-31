@@ -9,10 +9,10 @@ namespace Hangman
     {
         static void Main(string[] args)
         {
-            bool run = true;
             string input, answer;
             char guessedChar;
             int i,j,numberOfGuesses=10;
+
             List<string> guessedList = new List<string>();
 
             //read words from file and put in array
@@ -25,15 +25,14 @@ namespace Hangman
             //select random word.
 
             var random = new Random();
-            int maxValue = wordlist.Length + 1;
-            int rnd = random.Next(0,maxValue);
+            int rnd = random.Next(0, wordlist.Length);
             answer = wordlist[rnd];
 
-            //make a string of * to show number of letters in answer
+            //make a string of _ to show number of letters in answer
 
             char[] answerAsCharArray = answer.ToCharArray();
             char[] answerDisplay = new char[answerAsCharArray.Length];
-
+            
             for( i=0;i<answerAsCharArray.Length;i++)
             {
                 answerDisplay[i] = '_';
@@ -42,87 +41,78 @@ namespace Hangman
             //Stringbuilder, use it to collect every guess and display
 
             StringBuilder guessedLetters = new StringBuilder(11);
-            do
+           
+            while (numberOfGuesses > 0)
             {
-                while (numberOfGuesses>0)
+
+                //Check if the puzzle has been solved, if it has end loop
+                string checkAnswer = new string(answerDisplay);
+                if (checkAnswer == answer)
                 {
-                    //Check if the puzzle have been solved, if it has
-                    string checkAnswer = new string(answerDisplay);
-                    if (checkAnswer == answer)
+                    WriteLine("You Win!");
+                    numberOfGuesses = 0;
+                    break;
+                }
+                else
+                {
+                    Clear();
+                    WriteLine("Guess the word!");
+                    //Display number of letters in word
+                    WriteLine(answerDisplay);
+                    //Display previously guessed letters
+                    WriteLine(guessedLetters);
+                    WriteLine($"Guesses left:{ numberOfGuesses.ToString() }\n1. Guess a letter.\n2. Solve word");
+                    input = ReadLine();
+                    switch (input)
                     {
-                        WriteLine("You Win!");
-                        run = false;
-                        numberOfGuesses = 0;
+                     ///////////////////////////////
+                        case "1":
+                            numberOfGuesses--;
+                            WriteLine("Guess a letter: ");
+                            input = ReadLine();
+                            guessedChar = ConvertToChar(input);
+                            for (j = 0; j < answerAsCharArray.Length; j++)
+                            {
+                                if (guessedChar == answerAsCharArray[j])
+                                {
+                                    answerDisplay[j] = guessedChar;
+                                }
+                                else { }
+                            }
+                            if (guessedList.Contains(input) == true)
+                            {
+                                numberOfGuesses++;
+                            }
+                            else
+                            {
+                                guessedList.Add(input);
+                            }
+                            guessedLetters.Append(guessedChar);
+                        break;
+
+                     ///////////////////////////////
+
+                        case "2":
+                            input = ReadLine();
+                            if (input == answer)
+                            {
+                                WriteLine("You Win!");
+                                numberOfGuesses = 0;
+                                break;
+                            }
+                            else
+                            {
+                                numberOfGuesses--;
+                            }
+                        break;
+                     ///////////////////////////////
+                        default:
+                            WriteLine("Invalid choice, try again...");
+                            ReadLine();
                         break;
                     }
-                    else
-                    {
-                        Clear();
-                        WriteLine("Guess the word!");
-
-                        //Display number of letters in word
-                        WriteLine(answerDisplay);
-
-                        //Display previously guessed letters
-                        WriteLine(guessedLetters);
-
-                        WriteLine($"Guesses left:{ numberOfGuesses.ToString() }\n1. Guess a letter.\n2. Solve word");
-                        input = ReadLine();
-                        switch (input)
-                        {
-                            ///////////////////////////////
-                            case "1":
-                                numberOfGuesses--;
-                                WriteLine("Guess a letter: ");
-                                input = ReadLine();
-                                guessedChar = ConvertToChar(input);
-                                for (j = 0; j < answerAsCharArray.Length; j++)
-                                {
-                                    if (guessedChar == answerAsCharArray[j])
-                                    {
-                                        answerDisplay[j] = guessedChar;
-                                    }
-                                    else { }
-                                }
-                                if (guessedList.Contains(input) == true)
-                                {
-                                    numberOfGuesses++;
-                                }
-                                else
-                                {
-                                    guessedList.Add(input);
-                                }
-                                guessedLetters.Append(guessedChar);
-                                break;
-
-                            ///////////////////////////////
-                            
-                            case "2":
-                                input = ReadLine();
-                                if (input == answer)
-                                {
-                                    WriteLine("You Win!");
-                                    run = false;
-                                    numberOfGuesses = 0;
-                                    break;
-                                }
-                                else
-                                {
-                                    numberOfGuesses--;
-                                }
-                                break;
-                            ///////////////////////////////
-                            default:
-                                WriteLine("Invalid choice, try again...");
-                                ReadLine();
-                                break;
-                        }
-                    }
                 }
-                //game is over, end loop.
-               // run = false;
-            
-            } while (run == true);
+            }
 
             WriteLine("Thank you for playing.");
             ReadLine();
@@ -130,7 +120,7 @@ namespace Hangman
         public static char ConvertToChar(string input)
         {
             char result;
-           // Not sure how this conversion would fail, but I didn't realize that until after I wrote it. 
+            // Not sure how this conversion would fail, but I didn't realize that until after I wrote it. 
             while(char.TryParse(input, out result) == false)
             {
                 WriteLine("Invalid input. Try again!");
