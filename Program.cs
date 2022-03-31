@@ -75,8 +75,6 @@ namespace Hangman
                                 else { }
                             }
 
-                            
-
                             guessedLetters.Append(guessedChar);
 
 
