@@ -10,7 +10,7 @@ namespace Hangman
         static void Main(string[] args)
         {
             bool run = true;
-            string input, answer, checkAnswer;
+            string input, answer;
             char guessedChar;
             int i,j;
             //StreamReader wordlistTxt = new StreamReader("wordlist.txt");
@@ -43,7 +43,7 @@ namespace Hangman
             {
                 for ( i = 10; i > 0; i--)
                 {
-                    checkAnswer = answerDisplay.ToString();
+                    string checkAnswer = new string(answerDisplay);
                     if (checkAnswer == answer)
                     {
                         WriteLine("You Win!");
